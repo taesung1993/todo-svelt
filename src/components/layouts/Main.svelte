@@ -1,9 +1,13 @@
 <script>
+    import {createEventDispatcher} from 'svelte';
     import TodoItem from '../todo-item.svelte';
-    export let todos;
     export let memory;
+    export let ings;
+    export let dones;
 
-    $: lastIndex = todos.length - 1;
+    const dispatch = createEventDispatcher();
+
+    $: lastIndex = ings.length - 1;
 
     function onSelect(todo) {
         const todoId = todo.id;
@@ -14,26 +18,52 @@
         } else {
             memory.selected[todoId] = todo;
         }
-        
-        memory = memory;
+
+        dispatch('updateMemory', {
+                memory: memory
+        });
     }
+
 </script>
 
 <main>
-    <ul class="todos">
-        {#each todos as todo, index (todo.id)}
-            <TodoItem 
-            {...todo} 
-            last={index === lastIndex}
-            memory={memory}
-            on:click={() => onSelect(todo, index)}
-        />
-        {/each}
-    </ul>
+    {#if ings.length}
+        <ul class="todos">
+            {#each ings as todo, index (todo.id)}
+                <TodoItem 
+                {...todo} 
+                last={index === lastIndex}
+                memory={memory}
+                on:click={() => onSelect(todo)}
+            />
+            {/each}
+        </ul>
+    {/if}
+    
+    {#if dones.length}
+        {#if ings.length}
+            <hr/>
+        {/if}
+        <ul class="todos">
+            {#each dones as todo, index (todo.id)}
+                <TodoItem 
+                {...todo} 
+                last={index === lastIndex}
+                memory={memory}
+                on:click={() => onSelect(todo)}
+            />
+            {/each}
+        </ul>
+    {/if}
 </main>
 
 <style>
     main {
         margin-top: 2.4rem;
+    }
+
+    hr {
+        margin: 2.4rem 0;
+        border-color: #ddd;
     }
 </style>
