@@ -3,6 +3,12 @@
 	import Main from './components/layouts/Main.svelte';
 	import Footer from './components/layouts/Footer.svelte';
 
+	let memory = {
+		ing: {},
+		done: {},
+		selected: {}
+	}
+
 	let todos = [
         {
             id: 1,
@@ -16,7 +22,7 @@
         },
         {
             id: 3,
-            done: true,
+            done: false,
             text: 'Angular Universal 공부하기'
         }
     ]
@@ -35,7 +41,7 @@
 
 <section class="container">
 	<Header/>
-	<Main {todos}/>
+	<Main {todos} {memory}/>
 	<Footer on:create={onCreateTodo}/>
 </section>
 

@@ -1,17 +1,21 @@
 <script>
     import TodoItem from '../todo-item.svelte';
     export let todos;
+    export let memory;
 
     $: lastIndex = todos.length - 1;
 
-    function handleClick(todo, index) {
-        const isDone = todo.done;
-        if(isDone) {
-            return;
+    function onSelect(todo) {
+        const todoId = todo.id;
+        const isSelected = !!memory.selected[todoId];
+
+        if(isSelected) {
+            delete memory.selected[todoId];
+        } else {
+            memory.selected[todoId] = todo;
         }
-        todo.done = true;
-        todos[index] = todo;
-        todos = todos;
+        
+        memory = memory;
     }
 </script>
 
@@ -21,7 +25,8 @@
             <TodoItem 
             {...todo} 
             last={index === lastIndex}
-            on:click={() => handleClick(todo, index)}
+            memory={memory}
+            on:click={() => onSelect(todo, index)}
         />
         {/each}
     </ul>

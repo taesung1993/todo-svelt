@@ -1,13 +1,17 @@
 <script>
     import ConfirmIcon from './icons/Confirm.svelte';
 
+    export let memory;
     export let id;
     export let text;
     export let done;
     export let last;
+
+    $: selected = !!memory.selected[id];
 </script>
 
-<li class:last={last} class:done={done}>
+<li class:last={last} 
+    class:selected={selected}>
     <section class="text-section">
         <div>{text}</div>
     </section>
@@ -15,10 +19,10 @@
         <div class="btn-wrapper">
             <button 
                 class="confirm-btn" 
-                class:done={done}
+                class:selected={selected}
                 on:click
             >
-                {#if done}
+                {#if selected}
                   <ConfirmIcon color="#A7AFFE"/>
                 {/if}
             </button>
@@ -36,6 +40,7 @@
         margin-bottom: 1.2rem;
         font-weight: 500;
         background: #f9f9f9;
+        border: 0.1rem solid #999;
     }
 
     li .text-section div {
@@ -44,11 +49,12 @@
         color: #1c1c1c;
     }
 
-    li.done {
+    li.selected {
         background: #A7AFFE;
+        border: none;
     }
 
-    li.done .text-section div {
+    li.selected .text-section div {
         color: #4D4D5C;
     }
 
@@ -68,7 +74,7 @@
         cursor: pointer;
     }
 
-    li .confirm-btn.done {
+    li .confirm-btn.selected {
         background: #fff;
         border: none;
         box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.15);
