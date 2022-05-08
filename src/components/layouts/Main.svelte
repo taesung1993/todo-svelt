@@ -25,5 +25,10 @@
         />
         {/each}
     </ul>
-    {todos.length}
 </main>
+
+<style>
+    main {
+        margin-top: 2.4rem;
+    }
+</style>
