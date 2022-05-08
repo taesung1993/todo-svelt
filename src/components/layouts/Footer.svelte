@@ -7,9 +7,11 @@
     let target;
 
     function handleSubmit() {
-        dispatch('create', {
-            text: content
-        })
+        if(content) {
+            dispatch('create', {
+                text: content
+            });   
+        }
         target.value = '';
     }
 </script>
