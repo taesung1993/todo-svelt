@@ -11,7 +11,9 @@
 </script>
 
 <li class:last={last} 
-    class:selected={selected}>
+    class:selected={selected}
+    class:done={done}
+    >
     <section class="text-section">
         <div>{text}</div>
     </section>
@@ -20,9 +22,11 @@
             <button 
                 class="confirm-btn" 
                 class:selected={selected}
+                class:done={done}
+                disabled={done}
                 on:click
             >
-                {#if selected}
+                {#if selected || done}
                   <ConfirmIcon color="#A7AFFE"/>
                 {/if}
             </button>
@@ -49,12 +53,17 @@
         color: #1c1c1c;
     }
 
-    li.selected {
+    li.selected, li.done {
         background: #A7AFFE;
         border-color: #A7AFFE;
     }
 
-    li.selected .text-section div {
+    li.done {
+        opacity: 0.2;    
+    }
+
+    li.selected .text-section div,
+    li.done .text-section div {
         color: #4D4D5C;
     }
 
@@ -74,7 +83,8 @@
         cursor: pointer;
     }
 
-    li .confirm-btn.selected {
+    li .confirm-btn.selected,
+    li .confirm-btn.done {
         background: #fff;
         border: none;
         box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.15);
