@@ -51,7 +51,7 @@
 
     li.selected {
         background: #A7AFFE;
-        border: none;
+        border-color: #A7AFFE;
     }
 
     li.selected .text-section div {
