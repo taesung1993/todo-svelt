@@ -1,19 +1,21 @@
 <script>
-    import {createEventDispatcher} from 'svelte';
+    import {todos} from "../../store/todos";
 
-    export let memory;
-    const dispatch = createEventDispatcher();
     let time = new Date();
-    
+
     // 선언형 변수: time의 변화에 따라 자동으로 Update
     $: datetime = time.toISOString();
     $: todaySDate = `${time.getFullYear()}년 ${time.getMonth() + 1}월 ${time.getDate()}일`
-    $: areSelected = !!Object.values(memory.selected).length;
+    $: areSelected = true;
 
-    function onSendCommand(cmd) {
-        dispatch('sendCommand', {
-            cmd
-        });
+    function onCompleteTodo() {
+        // Complete Selected Todo...
+        todos.complete();
+    }
+
+    function onDeleteTodo() {
+        // Delete Selected Todo...
+        todos.delete();
     }
 </script>
 
@@ -29,7 +31,7 @@
                 <button 
                     class="del-btn"
                     disabled={!areSelected}
-                    on:click={() => onSendCommand('delete')}
+                    on:click={() => onDeleteTodo()}
                 >
                     삭제
                 </button>
@@ -38,7 +40,7 @@
                 <button 
                     class="clt-btn"
                     disabled={!areSelected}
-                    on:click={() => onSendCommand('complete')}
+                    on:click={() => onCompleteTodo()}
                     >
                     완료
                 </button>

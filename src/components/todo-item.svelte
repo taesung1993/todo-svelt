@@ -1,32 +1,27 @@
 <script>
     import ConfirmIcon from './icons/Confirm.svelte';
-
-    export let memory;
-    export let id;
-    export let text;
-    export let done;
+    export let todo;
     export let last;
-
-    $: selected = !!memory.selected[id];
+    export let selected;
 </script>
 
 <li class:last={last} 
     class:selected={selected}
-    class:done={done}
+    class:done={todo.done}
     >
     <section class="text-section">
-        <div>{text}</div>
+        <div>{todo.text}</div>
     </section>
     <section class="btn-section">
         <div class="btn-wrapper">
             <button 
                 class="confirm-btn" 
                 class:selected={selected}
-                class:done={done}
-                disabled={done}
+                class:done={todo.done}
+                disabled={todo.done}
                 on:click
             >
-                {#if selected || done}
+                {#if selected || todo.done}
                   <ConfirmIcon color="#A7AFFE"/>
                 {/if}
             </button>

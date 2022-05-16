@@ -1,16 +1,11 @@
 <script>
-    import {createEventDispatcher} from 'svelte';
-
-    const dispatch = createEventDispatcher();
-
-    let content;
+    import {todos} from '../../store/todos';
+    let text;
     let target;
 
     function handleSubmit() {
-        if(content) {
-            dispatch('create', {
-                text: content
-            });   
+        if(text) {
+            todos.addTodo(text);
         }
         target.value = '';
     }
@@ -21,7 +16,7 @@
         <section class="input-section">
             <input 
                 type="text" 
-                bind:value={content}
+                bind:value={text}
                 bind:this={target}
             >
         </section>

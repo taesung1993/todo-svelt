@@ -1,55 +1,42 @@
 <script>
-    import {createEventDispatcher} from 'svelte';
+    import {todos} from '../../store/todos';
     import TodoItem from '../todo-item.svelte';
-    export let memory;
-    export let ings;
-    export let dones;
 
-    const dispatch = createEventDispatcher();
-
-    $: lastIndex = ings.length - 1;
+    $: doingList = $todos.filter((td) => !td.done);
+    $: completedList = $todos.filter((td) => td.done);
 
     function onSelect(todo) {
-        const todoId = todo.id;
-        const isSelected = !!memory.selected[todoId];
-
-        if(isSelected) {
-            delete memory.selected[todoId];
+        if(todos.isSelected(todo)) {
+            todos.unSelectTodo(todo);
         } else {
-            memory.selected[todoId] = todo;
+            todos.selectTodo(todo);
         }
-
-        dispatch('updateMemory', {
-                memory: memory
-        });
     }
-
 </script>
 
 <main>
-    {#if ings.length}
+    {#if doingList.length}
         <ul class="todos">
-            {#each ings as todo, index (todo.id)}
+            {#each doingList as todo, index (todo.id)}
                 <TodoItem 
-                {...todo} 
-                last={index === lastIndex}
-                memory={memory}
+                {todo} 
+                last={index === doingList.length - 1}
+                selected={todos.isSelected(todo)}
                 on:click={() => onSelect(todo)}
             />
             {/each}
         </ul>
     {/if}
     
-    {#if dones.length}
-        {#if ings.length}
+    {#if completedList.length}
+        {#if doingList.length}
             <hr/>
         {/if}
         <ul class="todos">
-            {#each dones as todo, index (todo.id)}
+            {#each completedList as todo, index (todo.id)}
                 <TodoItem 
-                {...todo} 
-                last={index === lastIndex}
-                memory={memory}
+                {todo} 
+                last={index === completedList.length - 1}
                 on:click={() => onSelect(todo)}
             />
             {/each}
